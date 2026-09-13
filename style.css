@@ -1,0 +1,331 @@
+/* Genel Arka Plan Altyapısı */
+.main {
+    background-color: #f4f7f6 !important;
+    font-family: 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+/* Ana Navigasyon Çubuğu (Navbar Container) */
+.navbar-container {
+    background: #ffffff;
+    padding: 16px 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(78, 137, 117, 0.05);
+    margin-bottom: 25px;
+    border: 1px solid rgba(232, 244, 240, 0.7);
+}
+
+/* Ana Menü Başlıkları Satırı */
+.main-nav-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border-bottom: 2px solid #f0f5f3;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.main-nav-item {
+    font-size: 16px;
+    font-weight: 700;
+    color: #8fa89b;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.main-nav-item.active {
+    color: #2c4a3e;
+    position: relative;
+}
+
+/* Aktif Ana Menünün Altına Çizgi Efekti */
+.main-nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #4e8975;
+    border-radius: 2px;
+}
+
+/* Alt Menü (Sub-menu) Hap Butonlar Satırı */
+.sub-nav-row {
+    display: flex;
+    gap: 12px;
+}
+
+/* Aktif Alt Menü (Sevimli Oval Kutucuk) */
+.sub-nav-item-active {
+    background: #e8f4f0 !important;
+    color: #2c4a3e !important;
+    padding: 8px 20px !important;
+    border-radius: 20px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    border: 1px solid #4e8975 !important;
+    box-shadow: 0 4px 10px rgba(78, 137, 117, 0.1) !important;
+}
+
+/* Pasif Alt Menü */
+.sub-nav-item-passive {
+    background: transparent;
+    color: #7a9485;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.sub-nav-item-passive:hover {
+    background: #fafcfb;
+    border-color: #e2eae6;
+    color: #2c4a3e;
+}
+
+/* Ana Kartların Yapısı */
+.data-card {
+    background: #1e2622; /* Kendi arka plan rengine göre revize edebilirsin */
+    border: 1px solid #2d3832;
+    border-radius: 12px;
+    padding: 20px;
+    
+    /* 🎯 ALT KISIMLARIN HİZALANMASINI SAĞLAYAN SİHİRLİ DOKUNUŞ */
+    min-height: 180px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    
+    box-sizing: border-box;
+}
+
+/* Etiketlerin (Tag) Kapsayıcı Kutusu */
+.tag-container {
+    /* 🎯 ETİKETLERİN YAN YANA DİZİLİP OTOMATİK ALT SATIRA GEÇMESİNİ SAĞLAR */
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 6px; 
+    margin-top: auto; /* Kutunun en altına yaslanmasını garanti eder */
+    padding-top: 12px;
+}
+
+/* Tekil Etiket Stili */
+.card-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #4a5568;
+    white-space: nowrap; /* Kelimenin kendi içinde garipçe bölünmesini engeller */
+}
+
+/* Kapsayıcı kolonların Streamlit tarafında dikeyde gerilmesini garanti altına alalım */
+[data-testid="column"] {
+    display: flex;
+}
+[data-testid="column"] > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Kart içi eleman boşluklarını dengeler */
+.data-card h5, .data-card p, .data-card div {
+    margin-bottom: 8px !important;
+}
+
+.data-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(78, 137, 117, 0.06);
+}
+
+.card-osmi { 
+    background: #b5b8ef; 
+    border-left: 6px solid #a6d2b5; /* Kontrast için koyu kenarlık */
+    color: #000000 !important; /* Yazılar canavar gibi okunsun diye kapkara */
+}
+
+/* 🎵 Spotify & Youtube Kartı - Grafiklerdeki o cayır cayır yanan turuncu-kırmızı zemin */
+.card-spot { 
+    background: #d57868; 
+    border-left: 6px solid #a6d2b5; 
+    color: #000000 !important; 
+}
+div.stButton > button {
+    white-space: nowrap !important; /* Metnin 2 satıra bölünmesini engeller */
+    word-break: keep-all !important;
+    height: auto !important;        /* Karemsi dikey uzamayı çözer */
+    min-height: 2.5rem !important;  /* Standart buton yüksekliği */
+    padding: 0.5rem 1rem !important;/* İç boşlukları dengeler */
+}
+
+/* 🌐 Ortadaki diğer kart - Grafiklerin o tatlı neon zümrüt yeşili zemini */
+.card-gd { 
+    background: #00CC96; 
+    border-left: 6px solid #101520; 
+    color: #000000 !important;
+}
+
+.card-osmi *, .card-spot *, .card-gd * {
+    color: #0c0f14 !important; 
+    opacity: 1 !important; /* Eğer saydamlık varsa kaldırır */
+}
+
+/* Alttaki siyah küçük butonların içindeki yazılar beyaz kalmalı, onu koruyalım: */
+.card-osmi div *, .card-spot div *, .card-gd div * {
+    color: #ffffff !important; 
+}
+
+/* Yumuşak Bölüm Geçiş Çizgisi */
+.section-divider {
+    height: 1px;
+    background: linear-gradient(to right, #4e8975, transparent);
+    margin: 45px 0 25px 0;
+    opacity: 0.25;
+}
+
+/* Premium Koyu Tema Dataframe Wrapper */
+[data-testid="stDataFrame"] {
+    background: linear-gradient(135deg, #111613 0%, #161c19 100%) !important;
+    padding: 12px !important;
+    border-radius: 12px !important;
+    border: 1px solid #232d28 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24) !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Tablonun Üzerine Gelindiğinde (Hover Efekti) */
+[data-testid="stDataFrame"]:hover {
+    border-color: #365445 !important;
+    box-shadow: 0 12px 40px rgba(78, 137, 117, 0.12) !important;
+}
+
+/* Streamlit İçindeki Izgara Elementlerinin Arka Plan Standartlaştırması */
+[data-testid="stDataFrame"] div[data-testid="stTable"] {
+    background-color: transparent !important;
+}
+
+/* Tablo Köşelerindeki Boşluk Kontrolleri ve Yumuşatma */
+[data-testid="stDataFrame"] > div {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+/* Veri Yüklenirken Çıkan İnce Çizgi Efektini Sakinleştirme */
+[data-testid="stDataFrame"] [data-progressbar] {
+    background-color: #4e8975 !important;
+}
+/* Hedef Değişkenler İçin Özel Belirgin Etiket */
+.target-tag {
+    background: #192620;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #a3bdae;
+    display: inline-block;
+    border: 1px solid #365445;
+}
+
+/* --- ÇAPRAZ SORGUPANELİ İÇİN EKLEMELER --- */
+
+/* Dropdown (Selectbox) Kartlarının Etrafını Özelleştirme */
+div[data-baseweb="select"] {
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Expander (Katlanabilir Tablo Alanı) Tasarımı */
+.streamlit-expanderHeader {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 10px 15px !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
+}
+
+/* Horizontal Rule (Çizgi) İnceltme */
+hr {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+    border-color: #e2e8f0 !important;
+}
+[data-testid="stSidebar"] {
+    width: 220px !important;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    padding-left: 0.8rem !important;
+    padding-right: 0.8rem !important;
+    padding-top: 1.5rem !important;
+}
+
+/* Radio Menü Seçenek Aralıklarını Daraltma */
+[data-testid="stSidebar"] [data-testid="stRadio"] > div {
+    gap: 2px !important;
+}
+
+/* Radio Menü Metin Boyutları ve Hizalama */
+[data-testid="stSidebar"] [data-testid="stRadio"] label {
+    font-size: 13px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    cursor: pointer;
+}
+
+/* Kategori Başlıklarını Şık ve Ayrıştırıcı Yapma */
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p strong {
+    font-size: 11px !important;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #888888;
+}
+
+[data-testid="stSidebar"] .stButton > button {
+    /* Kenar beyazlığını / çizgisini tamamen siler */
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    
+    /* Arka planı hafif şeffaf dark yapar, buton havasını korur ama çizgisiz durur */
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #e0e0e0 !important;
+    
+    /* Taşmayı önlemek için iç boşluklar ve font ayarı */
+    font-size: 12px !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+    
+    /* Metnin buton dışına taşmasını engeller */
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    
+    margin-bottom: 4px !important;
+    border-radius: 6px !important;
+}
+
+/* Hover (üzerine gelince) ve Active (tıklanınca) durumları */
+[data-testid="stSidebar"] .stButton > button:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+[data-testid="stSidebar"] .stButton > button:focus,
+[data-testid="stSidebar"] .stButton > button:active {
+    background-color: rgba(255, 255, 255, 0.18) !important;
+    border: none !important;
+    box-shadow: none !important;
+}
