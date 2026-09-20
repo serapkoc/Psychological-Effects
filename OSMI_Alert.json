@@ -1,0 +1,173 @@
+{
+  "name": "OSMI Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "osmi-alert",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -464,
+        16
+      ],
+      "id": "66819a7e-2008-4b8c-a2a6-00526ab3d2ef",
+      "name": "Listener",
+      "webhookId": "2ff83be6-2298-43d4-b497-267f8982b32d"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gelen body verisini al\nconst body = $input.item.json.body || $input.item.json;\n\n// Helper: Markdown metinleri HTML'e çevirme fonksiyonu\nfunction markdownToHtml(text) {\n  if (!text) return \"\";\n  return text\n    .replace(/\\n/g, \"<br>\")                          // Satır başlarını <br> yap\n    .replace(/\\*\\*(.*?)\\*\\*/g, \"<strong>$1</strong>\") // **kalın** yazıları <strong> yap\n    .replace(/\\*(.*?)\\*/g, \"<em>$1</em>\");           // *italik* yazıları <em> yap\n}\n\n// Parametreleri temizle ve hazırla\nconst riskGroup = body.risk_group || \"Bilinmeyen Küme\";\nconst isHighRisk = riskGroup.includes(\"🔴\") || body.action_type.includes(\"None\");\n\nconst targetCount = body.target_count || 0;\nconst targetEmail = body.target_email || \"hr@company.com\";\nconst rawMediaLink = body.media_link;\n\n// Media link '#' geldiyse varsayılan YouTube/Spotify Arama linki koy\nconst mediaLink = (!rawMediaLink || rawMediaLink === \"#\") \n  ? \"https://open.spotify.com/genre/wellness-page\" \n  : rawMediaLink;\n\nconst motivationMessageHtml = markdownToHtml(body.motivation_message);\nconst ilaveAksiyonHtml = markdownToHtml(body.ilave_aksiyon);\n\n// -------------------------------------------------------------\n// 1. İK ERKEN UYARI MAİL ŞABLONU (YÜKSEK RİSK - RED THEME)\n// -------------------------------------------------------------\nconst hrEmailSubject = `🚨 [İK ERKEN UYARI] ${riskGroup} - Aksiyon Planı`;\nconst hrEmailBodyHtml = `\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <style>\n    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }\n    .container { max-width: 650px; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin: 0 auto; }\n    .header-red { background: #dc3545; color: #ffffff; padding: 20px 25px; }\n    .header-red h2 { margin: 0; font-size: 20px; }\n    .content { padding: 25px; }\n    .badge { display: inline-block; background: #ffeef0; color: #dc3545; font-weight: bold; padding: 6px 12px; border-radius: 4px; font-size: 13px; margin-bottom: 15px; }\n    .box { background: #f8f9fa; border-left: 4px solid #dc3545; padding: 15px; border-radius: 4px; margin-bottom: 20px; font-size: 14px; line-height: 1.6; }\n    .box-green { background: #f0fff4; border-left: 4px solid #28a745; padding: 15px; border-radius: 4px; margin-bottom: 20px; font-size: 14px; line-height: 1.6; }\n    .footer { text-align: center; font-size: 12px; color: #888; padding: 15px; border-top: 1px solid #eee; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header-red\">\n      <h2>🚨 İK Erken Uyarı & Risk Müdahale Raporu</h2>\n    </div>\n    <div class=\"content\">\n      <div class=\"badge\">Etkilenen Kitle: ${targetCount} Çalışan</div>\n      <h3>Hedef Risk Grubu:</h3>\n      <p><strong>${riskGroup}</strong></p>\n      \n      <h3>🎯 Stratejik İK Aksiyon Planı (LLM):</h3>\n      <div class=\"box\">\n        ${ilaveAksiyonHtml}\n      </div>\n\n      <h3>💬 Çalışanlara Gönderilecek / Önerilen İletişim Metni:</h3>\n      <div class=\"box-green\">\n        ${motivationMessageHtml}\n      </div>\n    </div>\n    <div class=\"footer\">\n      Bu e-posta HR Analytics Otomasyon Sistemi tarafından otomatik oluşturulmuştur.\n    </div>\n  </div>\n</body>\n</html>\n`;\n\n// -------------------------------------------------------------\n// 2. ESENLİK BÜLTENİ MAİL ŞABLONU (WELLNESS - GREEN/PURPLE THEME)\n// -------------------------------------------------------------\nconst wellnessEmailSubject = `🌿 Haftalık Cuma Esenlik Bülteniniz & Müzik Molası 🎧`;\nconst wellnessEmailBodyHtml = `\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <style>\n    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; color: #2d3748; }\n    .container { max-width: 600px; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin: 0 auto; }\n    .header-green { background: linear-gradient(135deg, #1db954 0%, #191414 100%); color: #ffffff; padding: 30px 25px; text-align: center; }\n    .header-green h1 { margin: 0; font-size: 22px; font-weight: 600; }\n    .content { padding: 30px 25px; font-size: 15px; line-height: 1.7; color: #4a5568; }\n    .btn-spotify { display: inline-block; background-color: #1db954; color: #ffffff !important; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 30px; margin: 20px 0; text-align: center; font-size: 15px; }\n    .footer { text-align: center; font-size: 12px; color: #a0aec0; padding: 20px; background: #f7fafc; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header-green\">\n      <h1>🎧 Haftanın Esenlik & Müzik Molası</h1>\n    </div>\n    <div class=\"content\">\n      ${motivationMessageHtml}\n      \n      <div style=\"text-align: center; margin-top: 25px;\">\n        <a href=\"${mediaLink}\" target=\"_blank\" class=\"btn-spotify\">\n          🎵 Önerilen Listeyi Spotify'da Dinle\n        </a>\n      </div>\n    </div>\n    <div class=\"footer\">\n      Sevgiyle,<br><strong>İnsan Kaynakları & Wellbeing Ekibi</strong>\n    </div>\n  </div>\n</body>\n</html>\n`;\n\n// Çıktıyı n8n formatında döndür\nreturn {\n  json: {\n    is_high_risk: isHighRisk,\n    target_email: targetEmail,\n    risk_group: riskGroup,\n    \n    // İK Mail Verileri\n    hr_subject: hrEmailSubject,\n    hr_html: hrEmailBodyHtml,\n    \n    // Esenlik Mail Verileri\n    wellness_subject: wellnessEmailSubject,\n    wellness_html: wellnessEmailBodyHtml\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -256,
+        16
+      ],
+      "id": "a00775a0-1cb0-4ca5-80b9-14fc7b4b4178",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "sendTo": "hr@example.com",
+        "subject": "={{ $('Code in JavaScript').item.json.wellness_subject }}",
+        "message": "={{ $('Code in JavaScript').item.json.wellness_html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        128
+      ],
+      "id": "1ebd6782-32bb-4246-b5a8-4209d9d656c3",
+      "name": "Çalışanlara Mail",
+      "webhookId": "e5b0b2f7-db71-40d3-abe8-c8edba30b1e0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ZFvSoyZOLSQNvm2P",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "hr@example.com",
+        "subject": "={{ $json.hr_subject }}",
+        "message": "={{ $('Code in JavaScript').item.json.hr_html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        384,
+        -224
+      ],
+      "id": "ef90832d-ab3a-4035-9ed7-699aaf973b85",
+      "name": "IK'ya Mail",
+      "webhookId": "e5b0b2f7-db71-40d3-abe8-c8edba30b1e0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ZFvSoyZOLSQNvm2P",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3f76ec25-9b9d-4239-ada3-d4d3d1e0684d",
+              "leftValue": "={{ $json.is_high_risk }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        -16
+      ],
+      "id": "91a74528-a87b-466f-a07b-960b8b67a5c0",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Listener": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IK'ya Mail": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "IK'ya Mail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Çalışanlara Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "62bf88a7-8006-4c51-bb26-719adfdf665b",
+  "meta": {
+    "instanceId": "ab541dd4fe0076f8a1a1feb6dcdf2e331ddd3d96d2f8e21943a17924caeb5258"
+  },
+  "id": "LG6jRBhOecNW9TQq",
+  "tags": []
+}
