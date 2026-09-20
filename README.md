@@ -4,9 +4,8 @@ Proje, çalışanların ruh sağlığı, işten ayrılma riski (turnover) ve ba�
 
 ---
 
-## 🛠️ Proje Mimarisi ve Kod Yapısı
+🛠️ Proje Mimarisi ve Kod Yapısı
 
-.
 ├── dataset/
 │   ├── mental_health.csv            # Temel işlenmiş veri seti
 │   ├── mental_health_train.csv      # Model eğitim veri seti
