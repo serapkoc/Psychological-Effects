@@ -5,7 +5,8 @@ Proje, çalışanların ruh sağlığı, işten ayrılma riski (turnover) ve ba�
 ---
 
 🛠️ Proje Mimarisi ve Kod Yapısı
-
+```text
+.
 ├── dataset/
 │   ├── mental_health.csv            # Temel işlenmiş veri seti
 │   ├── mental_health_train.csv      # Model eğitim veri seti
@@ -25,6 +26,7 @@ Proje, çalışanların ruh sağlığı, işten ayrılma riski (turnover) ve ba�
 ├── secrets.env                      # Hassas API anahtarları ve çevre değişkenleri
 └── style.css                        # Özel arayüz CSS stilleri
 
+```
 ## 📌 Öne Çıkan Özellikler ve Modüller
 
 ### 1. 📊 Keşifçi Veri Analizi (EDA) ve Anomali Tespiti (`eda.py`)
