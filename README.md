@@ -41,13 +41,30 @@ Proje, çalışanların ruh sağlığı, işten ayrılma riski (turnover) ve ba�
 * **ELTV Skoru & 4-Katmanlı Bağlılık Matrisi:** İzin esnekliği, iş etkilenme durumu ve turnover risk puanlarını harmanlayarak çalışanları *Kritik, Düşük, Orta, Yüksek Bağlılık* gruplarına ayırır.
 * **Tükenmişlik ve Stigma Endeksi:** Çalışanların psikolojik destek alma korkusu (damgalanma endeksi) ile tükenmişlik risk skorlarını 0-100 arasında hesaplar.
 
-### 4. 🤖 Çoklu LLM Desteği & SHAP Açıklanabilirliği (`llm_services.py`)
+### 4. 🤖 Makine Öğrenmesi & Model Eğitimi (`machine_learning.py`)
+* **Gözetimsiz Öğrenme & Kümeleme (Unsupervised Learning):** 
+  * Verinin boyutunu küçültmek için **PCA (Temel Bileşenler Analizi)** uygular.
+  * Optimal küme sayısını belirlemek adına **Yellowbrick KElbowVisualizer** ile *Distortion* ve *Silhouette* skorlarını analiz ederek **K-Means Kümeleme** gerçekleştirir.
+  * Hiyerarşik mesafe yapılarını incelemek için **Ward Bağlantı (Ward Linkage)** yöntemiyle **Dendrogram** çizdirir ve **Agglomerative Clustering** uygular.
+* **Anomali ve Aykırı Değer Tespiti:** 
+  * Veri setindeki anormal çalışan profillerini ve aykırı davranışları tespit etmek için **Isolation Forest** ve **Local Outlier Factor (LOF)** algoritmalarını çalıştırır.
+* **Gözetimli Öğrenme & Model Karşılaştırmaları (Supervised Learning):**
+  * `treatment` (destek alma ihtiyacı) ve `turnover_risk` (işten ayrılma riski) hedefleri için **CatBoost, LightGBM, XGBoost, Random Forest, Gradient Boosting, Extra Trees, Logistic Regression, Naive Bayes, KNN** ve **SVC** modellerini kapsayan geniş bir benchmark sunar.
+  * **Stratified 5-Fold Cross-Validation** kullanarak tüm modelleri *Precision, Recall, F1-Score* ve *ROC-AUC* metrikleriyle değerlendirir.
+* **Optuna ile Hiperparametre Optimizasyonu & Overfit Kontrolü:**
+  * Selected modeller için **Optuna** kütüphanesi ve **MedianPruner** kullanarak dinamik denemelerle (`n_trials`) en iyi hiperparametre kombinasyonlarını bulur.
+  * Modelin *Train F1* ve *Validation CV F1* skorları arasındaki farkı hesaplayarak **Yüksek, Orta veya Düşük Overfit** (Aşırı Öğrenme) risk etiketlerini belirler.
+* **Model Tahminleri & SHAP Açıklanabilirliği:**
+  * Test veri seti (`mental_health_test.csv`) üzerinde eğitilen modellerle bireysel çalışan tahminleri (olasılık % skorları) üretir.
+  * **SHAP (TreeExplainer / LinearExplainer)** kullanarak modellerin kararlarını şeffaflaştırır ve en kritik özniteliklerin (`Mean SHAP`) tahmin üzerindeki etkisini hesaplar.
+
+### 5. 🤖 Çoklu LLM Desteği & SHAP Açıklanabilirliği (`llm_services.py`)
 * **Çoklu LLM Sağlayıcı Entegrasyonu:** Google Gemini (`gemini-3-flash-preview`), Cohere (`command-a-03-2025`) ve Yerel Ollama (`minimax-m3:cloud`) modelleri dinamik olarak desteklenir.
 * **SHAP Yorumlayıcısı:** Karmaşık ML model çıktılarını ve SHAP değerlerini teknik terimlerden arındırarak İK diline uyarlanmış somut aksiyon raporlarına dönüştürür.
 * **Açık Uçlu Yorum Analizi:** Çalışan yorumlarından duygu (sentiment), stres seviyesi ve kök neden tespiti yapar.
 * **Persona Analizi ve Mood Eşleştirme:** K-Means kümelerini analiz eder; düşük riskli gruplara Spotify müzik reçetesi, yüksek riskli gruplara klinik mentorluk/terapi önerileri sunar.
 
-### 5. ⚡ Otomatik n8n Akış Tetikleme (`n8n.py`)
+### 6. ⚡ Otomatik n8n Akış Tetikleme (`n8n.py`)
 * **Dinamik Webhook Tetikleme:**
   * 🚨 **Yüksek Riskli Personalar:** İK Erken Uyarı Akışını tetikler ve İK birimine stratejik uyarı e-postası yollar.
   * 🚀 **Düşük/Orta Riskli Personalar:** Çalışan motivasyonunu artırmak için belirlenen Spotify Mood reçetesiyle birlikte "Cuma Esenlik Bülteni" akışını başlatır.
