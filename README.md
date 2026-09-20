@@ -1,4 +1,4 @@
-# 🧠 AI-Powered HR Analytics & Employee Well-being Platform
+# 🌱 AI-Powered HR Analytics & Employee Well-being Platform
 
 Proje, çalışanların ruh sağlığı, işten ayrılma riski (turnover) ve bağlılık düzeylerini makine öğrenmesi modelleri, istatistiksel testler, LLM (Büyük Dil Modelleri) ve n8n otomasyon akışları ile analiz eden bütüncül bir İnsan Kaynakları analitiği platformudur.
 
