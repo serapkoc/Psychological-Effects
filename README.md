@@ -120,7 +120,7 @@ Proje, çalışanların ruh sağlığı, işten ayrılma riski (turnover) ve ba�
 ## ⚙️ Kurulum ve Çalıştırma
 
 1. Depoyu Klonlayın
-bash
+```bash
 git clone [https://github.com/kullanici-adi/repo-adi.git](https://github.com/kullanici-adi/repo-adi.git)
 cd repo-adi
 
