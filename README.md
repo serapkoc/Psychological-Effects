@@ -25,6 +25,8 @@ Proje, çalışanların ruh sağlığı, işten ayrılma riski (turnover) ve ba�
 ├── n8n.py                           # n8n Webhook entegrasyonu ve otomatik İK aksiyon tetikleyicileri
 ├── secrets.env                      # Hassas API anahtarları ve çevre değişkenleri
 └── style.css                        # Özel arayüz CSS stilleri
+└── OSMI_Alert.json                  # n8n flow dosyası
+
 
 ```
 ## 📌 Öne Çıkan Özellikler ve Modüller
